@@ -1,5 +1,5 @@
 import axios from "axios";
-import { store } from "@/redux/store";
+import Cookies from "js-cookie";
 
 const api = axios.create({
   baseURL: "https://api.bitechx.com",
@@ -8,8 +8,9 @@ const api = axios.create({
   },
 });
 
+// Automatically add JWT token from cookies
 api.interceptors.request.use((config) => {
-  const token = store.getState().auth.token;
+  const token = Cookies.get("token");
   if (token) {
     config.headers.Authorization = `Bearer ${token}`;
   }
