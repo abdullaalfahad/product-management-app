@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useAppSelector } from "@/redux/hooks";
 import { useGetProductsQuery } from "@/redux/services/product-api";
 import { EmptyState } from "./empty-state";
 import { Header } from "./header";
@@ -11,18 +11,19 @@ import { ProductStats } from "./product-stats";
 import { ProductTable } from "./product-table";
 
 export default function ProductList() {
-  const [page, setPage] = useState(1);
-
-  const limit = 5;
-  const totalPages = 5;
-
-  const offset = (page - 1) * limit;
+  const { currentPage, limit, searchText } = useAppSelector(
+    (s) => s.productFilter,
+  );
 
   const {
     data: products = [],
     isLoading,
     isFetching,
-  } = useGetProductsQuery({ offset: offset, limit: limit });
+  } = useGetProductsQuery({
+    page: currentPage,
+    limit: limit,
+    search: searchText,
+  });
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 via-blue-50 to-gray-100 p-6">
@@ -42,11 +43,7 @@ export default function ProductList() {
         ) : (
           <>
             <ProductTable products={products} />
-            <Pagination
-              currentPage={page}
-              totalPages={totalPages}
-              onPageChange={setPage}
-            />
+            {!searchText && <Pagination />}
           </>
         )}
       </div>
