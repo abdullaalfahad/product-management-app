@@ -12,11 +12,11 @@ import { ProductForm } from "./product-form";
 import { Product } from "@/types/product";
 import { BackToProducts } from "./back-to-products";
 
-interface ProductFormProps {
+interface ProductUpsertProps {
   product?: Product;
 }
 
-export function ProductUpsert({ product }: ProductFormProps) {
+export function ProductUpsert({ product }: ProductUpsertProps) {
   const router = useRouter();
   const [preview, setPreview] = useState<string | null>(
     product?.images?.[0] || null
