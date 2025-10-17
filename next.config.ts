@@ -8,6 +8,9 @@ const nextConfig: NextConfig = {
       "plus.unsplash.com",
       "thumbs.dreamstime.com",
       "img.freepik.com",
+      "saralifestyle.com",
+      "images.unsplash.com",
+      "img.drz.lazcdn.com",
     ],
   },
 };
