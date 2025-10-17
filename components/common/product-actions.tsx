@@ -1,9 +1,9 @@
 import { Product } from "@/types/product";
 import { Edit, Trash2 } from "lucide-react";
 import React, { useState } from "react";
-import { DeleteAlert } from "./delete-alert";
+import { DeleteAlert } from "../products/delete-alert";
 
-export function TableActions({ product }: { product: Product }) {
+export function ProductActions({ product }: { product: Product }) {
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
 
@@ -29,7 +29,7 @@ export function TableActions({ product }: { product: Product }) {
       <div className="flex items-center justify-end gap-2">
         <button
           type="button"
-          className="inline-flex items-center cursor-pointer gap-2 px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 hover:border-gray-400 hover:shadow-sm transition-all duration-200"
+          className="flex-1 inline-flex items-center justify-center cursor-pointer gap-2 px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 hover:border-gray-400 hover:shadow-sm transition-all duration-200"
         >
           <Edit className="w-4 h-4" />
           Edit
@@ -37,7 +37,7 @@ export function TableActions({ product }: { product: Product }) {
         <button
           onClick={() => handleDeleteClick(product)}
           type="button"
-          className="inline-flex items-center cursor-pointer gap-2 px-4 py-2 text-sm font-medium text-red-600 bg-red-50 border border-red-200 rounded-lg hover:bg-red-100 hover:border-red-300 hover:shadow-sm transition-all duration-200"
+          className="flex-1 inline-flex items-center justify-center cursor-pointer gap-2 px-4 py-2 text-sm font-medium text-red-600 bg-red-50 border border-red-200 rounded-lg hover:bg-red-100 hover:border-red-300 hover:shadow-sm transition-all duration-200"
         >
           <Trash2 className="w-4 h-4" />
           Delete

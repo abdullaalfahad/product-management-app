@@ -3,13 +3,16 @@
 import { Edit, Trash2 } from "lucide-react";
 import Image from "next/image";
 import type { Product } from "@/types/product";
-import { TableActions } from "./table-actions";
+import { ProductActions } from "../common/product-actions";
+import { useRouter } from "next/navigation";
 
 interface ProductTableProps {
   products: Product[];
 }
 
 export function ProductTable({ products }: ProductTableProps) {
+  const router = useRouter();
+
   return (
     <div className="w-full">
       <div className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
@@ -37,7 +40,10 @@ export function ProductTable({ products }: ProductTableProps) {
                   key={p.id}
                   className="hover:bg-blue-50 transition-colors duration-200"
                 >
-                  <td className="px-6 py-4">
+                  <td
+                    className="px-6 py-4 cursor-pointer"
+                    onClick={() => router.push(`/products/${p.slug}`)}
+                  >
                     <div className="flex items-center gap-4">
                       <div className="relative h-14 w-14 flex-shrink-0">
                         <Image
@@ -73,7 +79,7 @@ export function ProductTable({ products }: ProductTableProps) {
                   </td>
 
                   <td className="px-6 py-4">
-                    <TableActions product={p} />
+                    <ProductActions product={p} />
                   </td>
                 </tr>
               ))}
