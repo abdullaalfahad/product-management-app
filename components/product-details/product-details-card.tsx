@@ -4,11 +4,12 @@ import Image from "next/image";
 import { useParams, useRouter } from "next/navigation";
 import { ArrowLeft, Package, Tag, DollarSign, X } from "lucide-react";
 import { useGetProductByIdQuery } from "@/redux/services/product-api";
-import { ProductActions } from "../common/product-actions";
+import { ProductActions } from "../product-upsert/product-actions";
 import { ProductDetailsSkeleton } from "./loading-skeleton";
 import { ProductNotFound } from "./empty-state";
+import { BackToProducts } from "../product-upsert/back-to-products";
 
-export default function ProductDetailsCard() {
+export function ProductDetailsCard() {
   const { slug } = useParams<{ slug: string }>();
   const router = useRouter();
 
@@ -22,13 +23,7 @@ export default function ProductDetailsCard() {
     <>
       <div className="min-h-screen bg-gradient-to-br from-gray-50 via-blue-50 to-gray-100 py-8 px-4">
         <div className="max-w-6xl mx-auto">
-          <button
-            onClick={() => router.back()}
-            className="inline-flex items-center cursor-pointer gap-2 px-4 py-2 mb-6 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 hover:border-gray-400 transition-all duration-200 shadow-sm"
-          >
-            <ArrowLeft className="w-4 h-4" />
-            Back to Products
-          </button>
+          <BackToProducts />
 
           <div className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-0">

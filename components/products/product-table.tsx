@@ -3,7 +3,7 @@
 import { Edit, Trash2 } from "lucide-react";
 import Image from "next/image";
 import type { Product } from "@/types/product";
-import { ProductActions } from "../common/product-actions";
+import { ProductActions } from "../product-upsert/product-actions";
 import { useRouter } from "next/navigation";
 
 interface ProductTableProps {

@@ -1,4 +1,5 @@
 import { Plus } from "lucide-react";
+import Link from "next/link";
 
 export function Header() {
   return (
@@ -11,13 +12,14 @@ export function Header() {
           Manage your product catalog and inventory
         </p>
       </div>
-      <button
+      <Link
+        href="/products/new"
         type="button"
         className="inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-blue-600 to-blue-700 text-white font-semibold rounded-lg hover:from-blue-700 hover:to-blue-800 shadow-md hover:shadow-lg transition-all duration-200"
       >
         <Plus className="w-5 h-5" />
         Add Product
-      </button>
+      </Link>
     </div>
   );
 }

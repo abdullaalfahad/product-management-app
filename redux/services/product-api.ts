@@ -41,6 +41,15 @@ export const productApi = createApi({
       providesTags: (result, error, id) => [{ type: "Products", id }],
     }),
 
+    createProduct: builder.mutation<Product, Partial<Product>>({
+      query: (body) => ({
+        url: "/products",
+        method: "POST",
+        body,
+      }),
+      invalidatesTags: ["Products"],
+    }),
+
     deleteProduct: builder.mutation({
       query: (id) => ({
         url: `/products/${id}`,
@@ -54,5 +63,6 @@ export const productApi = createApi({
 export const {
   useGetProductsQuery,
   useGetProductByIdQuery,
+  useCreateProductMutation,
   useDeleteProductMutation,
 } = productApi;
