@@ -1,29 +1,26 @@
 "use client";
 
-import { useState } from "react";
-import { useRouter } from "next/navigation";
-
 import axios from "axios";
 import Cookies from "js-cookie";
+import { Package } from "lucide-react";
+import { useState } from "react";
 import toast from "react-hot-toast";
-import { Package, ArrowLeft } from "lucide-react";
+import type { Product } from "@/types/product";
+import { BackToProducts } from "./back-to-products";
 import { ImageUpload } from "./image-upload";
 import { ProductForm } from "./product-form";
-import { Product } from "@/types/product";
-import { BackToProducts } from "./back-to-products";
 
 interface ProductUpsertProps {
   product?: Product;
 }
 
 export function ProductUpsert({ product }: ProductUpsertProps) {
-  const router = useRouter();
   const [preview, setPreview] = useState<string | null>(
-    product?.images?.[0] || null
+    product?.images?.[0] || null,
   );
   const [isUploading, setIsUploading] = useState(false);
   const [imageUrl, setImageUrl] = useState<string | null>(
-    product?.images?.[0] || null
+    product?.images?.[0] || null,
   );
 
   const uploadToImageKit = async (file: File): Promise<string> => {
@@ -41,7 +38,7 @@ export function ProductUpsert({ product }: ProductUpsertProps) {
       formData.append("fileName", file.name);
       formData.append(
         "publicKey",
-        process.env.NEXT_PUBLIC_IMAGEKIT_PUBLIC_KEY as string
+        process.env.NEXT_PUBLIC_IMAGEKIT_PUBLIC_KEY as string,
       );
       formData.append("signature", signature);
       formData.append("expire", expire.toString());
@@ -54,7 +51,7 @@ export function ProductUpsert({ product }: ProductUpsertProps) {
           headers: {
             Accept: "application/json",
           },
-        }
+        },
       );
 
       setIsUploading(false);

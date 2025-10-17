@@ -1,13 +1,13 @@
 import { createApi } from "@reduxjs/toolkit/query/react";
-import { setToken, logout } from "../slices/auth-slice";
 import api from "@/lib/axios";
+import { logout, setToken } from "../slices/auth-slice";
 
 export const authApi = createApi({
   reducerPath: "authApi",
   baseQuery: async ({ url, method, body }: any) => {
     try {
       const result = await api({ url, method, data: body });
-      console.log(result);
+
       return { data: result.data };
     } catch (err: any) {
       return {

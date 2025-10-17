@@ -1,14 +1,17 @@
 "use client";
 
-import { useForm } from "react-hook-form";
-import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { DollarSign, FileText, Loader2, Tag } from "lucide-react";
+import { ArrowRight, DollarSign, FileText, Loader2, Tag } from "lucide-react";
 import { useRouter } from "next/navigation";
+import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
-import { useCreateProductMutation } from "@/redux/services/product-api";
+import { z } from "zod";
 import { useGetCategoriesQuery } from "@/redux/services/category-api";
-import { Product } from "@/types/product";
+import {
+  useCreateProductMutation,
+  useUpdateProductMutation,
+} from "@/redux/services/product-api";
+import type { Product } from "@/types/product";
 
 const productSchema = z.object({
   name: z.string().min(3, "Product name must be at least 3 characters"),
@@ -32,6 +35,7 @@ export function ProductForm({
 }: ProductFormProps) {
   const router = useRouter();
   const [createProduct, { isLoading: creating }] = useCreateProductMutation();
+  const [updateProduct, { isLoading: updating }] = useUpdateProductMutation();
   const {
     data: categories = [],
     isLoading: isLoadingCategories,
@@ -61,21 +65,33 @@ export function ProductForm({
       toast.error("Please upload an image");
       return;
     }
+
+    const payload = {
+      name: data.name,
+      price: data.price,
+      description: data.description || "",
+      categoryId: data.categoryId,
+      images: [imageUrl],
+    };
+
     try {
-      const payload = {
-        name: data.name,
-        price: data.price,
-        description: data.description || "",
-        categoryId: data.categoryId,
-        images: [imageUrl],
-      };
-      await createProduct(payload).unwrap();
-      toast.success("Product created successfully!");
+      if (product) {
+        await updateProduct({ id: product.id, body: payload }).unwrap();
+        toast.success("Product updated successfully!");
+      } else {
+        await createProduct(payload).unwrap();
+        toast.success("Product created successfully!");
+      }
       router.push("/products");
-    } catch (err) {
-      toast.error("Failed to create product");
+    } catch {
+      toast.error(
+        product ? "Failed to update product" : "Failed to create product",
+      );
     }
   };
+
+  const isSubmitting =
+    creating || updating || isUploading || isLoadingCategories;
 
   return (
     <>
@@ -84,53 +100,66 @@ export function ProductForm({
           <FileText className="w-4 h-4" />
           Product Details
         </h3>
+
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-2">
+          <label
+            htmlFor="name"
+            className="block text-sm font-medium text-gray-700 mb-2"
+          >
             Product Name *
           </label>
           <input
+            id="name"
             type="text"
             {...register("name")}
-            className={`w-full border rounded-lg px-4 py-3 focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all duration-200 ${
+            className={`w-full border rounded-lg px-4 py-3 text-gray-700 placeholder-gray-400 focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all duration-200 ${
               errors.name ? "border-red-300" : "border-gray-300"
             }`}
             placeholder="Enter product name"
           />
           {errors.name && (
-            <p className="text-red-600 text-sm mt-2 flex items-center gap-1">
-              {errors.name.message}
-            </p>
+            <p className="text-red-600 text-sm mt-2">{errors.name.message}</p>
           )}
         </div>
+
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2 flex items-center gap-1">
+            <label
+              htmlFor="price"
+              className="block text-sm font-medium text-gray-700 mb-2 flex items-center gap-1"
+            >
               <DollarSign className="w-4 h-4" />
               Price *
             </label>
             <input
+              id="price"
               type="number"
               step="0.01"
               {...register("price", { valueAsNumber: true })}
-              className={`w-full border rounded-lg px-4 py-3 focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all duration-200 ${
+              className={`w-full border rounded-lg px-4 py-3 text-gray-700 placeholder-gray-400 focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all duration-200 ${
                 errors.price ? "border-red-300" : "border-gray-300"
               }`}
               placeholder="0.00"
             />
             {errors.price && (
-              <p className="text-red-600 text-sm mt-2 flex items-center gap-1">
+              <p className="text-red-600 text-sm mt-2">
                 {errors.price.message}
               </p>
             )}
           </div>
+
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2 flex items-center gap-1">
+            <label
+              htmlFor="categoryId"
+              className="block text-sm font-medium text-gray-700 mb-2 flex items-center gap-1"
+            >
               <Tag className="w-4 h-4" />
               Category *
             </label>
             <select
+              id="categoryId"
               {...register("categoryId")}
-              className={`w-full border rounded-lg px-4 py-3 focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all duration-200 ${
+              className={`w-full border rounded-lg px-4 py-3 text-gray-700 placeholder-gray-400 focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all duration-200 ${
                 errors.categoryId ? "border-red-300" : "border-gray-300"
               }`}
               disabled={isLoadingCategories}
@@ -143,25 +172,25 @@ export function ProductForm({
               ))}
             </select>
             {errors.categoryId && (
-              <p className="text-red-600 text-sm mt-2 flex items-center gap-1">
+              <p className="text-red-600 text-sm mt-2">
                 {errors.categoryId.message}
-              </p>
-            )}
-            {isLoadingCategories && (
-              <p className="text-gray-500 text-sm mt-2">
-                Loading categories...
               </p>
             )}
           </div>
         </div>
+
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-2">
+          <label
+            htmlFor="description"
+            className="block text-sm font-medium text-gray-700 mb-2"
+          >
             Description
           </label>
           <textarea
+            id="description"
             {...register("description")}
             rows={5}
-            className="w-full border border-gray-300 rounded-lg px-4 py-3 focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all duration-200 resize-none"
+            className="w-full border border-gray-300 rounded-lg px-4 py-3 text-gray-700 placeholder-gray-400 focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all duration-200 resize-none"
             placeholder="Enter product description..."
           />
           <p className="text-xs text-gray-500 mt-2">
@@ -169,6 +198,7 @@ export function ProductForm({
           </p>
         </div>
       </div>
+
       <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
         <div className="flex flex-col sm:flex-row justify-end gap-3">
           <button
@@ -181,20 +211,25 @@ export function ProductForm({
           <button
             type="button"
             onClick={handleSubmit(onSubmit)}
-            disabled={creating || isUploading || isLoadingCategories}
+            disabled={isSubmitting}
             className="flex-1 sm:flex-none cursor-pointer px-6 py-3 bg-gradient-to-r from-blue-600 to-blue-700 text-white font-semibold rounded-lg hover:from-blue-700 hover:to-blue-800 disabled:opacity-50 disabled:cursor-not-allowed shadow-md hover:shadow-lg transition-all duration-200 inline-flex items-center justify-center gap-2"
           >
-            {creating || isUploading || isLoadingCategories ? (
+            {isSubmitting ? (
               <>
                 <Loader2 className="w-5 h-5 animate-spin" />
                 {isUploading
                   ? "Uploading..."
                   : isLoadingCategories
-                  ? "Loading..."
-                  : "Saving..."}
+                    ? "Loading..."
+                    : product
+                      ? "Updating..."
+                      : "Saving..."}
               </>
             ) : (
-              <>{product ? "Update Product" : "Create Product"}</>
+              <>
+                <span className="whitespace-nowrap">{product ? "Update Product" : "Create Product"}</span>
+                <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+              </>
             )}
           </button>
         </div>

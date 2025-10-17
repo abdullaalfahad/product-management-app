@@ -1,11 +1,18 @@
-import { Product } from "@/types/product";
 import { Edit, Trash2 } from "lucide-react";
-import React, { useState } from "react";
+import { useRouter } from "next/navigation";
+import  { useState } from "react";
+import type { Product } from "@/types/product";
 import { DeleteAlert } from "../products/delete-alert";
 
 export function ProductActions({ product }: { product: Product }) {
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
+
+  const router = useRouter();
+
+  const handleEditClick = (product: Product) => {
+    router.push(`/products/${product.slug}/edit`);
+  };
 
   const handleDeleteClick = (product: Product) => {
     setSelectedProduct(product);
@@ -28,6 +35,7 @@ export function ProductActions({ product }: { product: Product }) {
     <>
       <div className="flex items-center justify-end gap-2">
         <button
+          onClick={() => handleEditClick(product)}
           type="button"
           className="flex-1 inline-flex items-center justify-center cursor-pointer gap-2 px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 hover:border-gray-400 hover:shadow-sm transition-all duration-200"
         >
