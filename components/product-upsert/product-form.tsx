@@ -159,7 +159,7 @@ export function ProductForm({
             <select
               id="categoryId"
               {...register("categoryId")}
-              className={`w-full border rounded-lg px-4 py-3 text-gray-700 placeholder-gray-400 focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all duration-200 ${
+              className={`w-full border rounded-lg px-4 py-[15px] text-gray-700 placeholder-gray-400 focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all duration-200 ${
                 errors.categoryId ? "border-red-300" : "border-gray-300"
               }`}
               disabled={isLoadingCategories}
@@ -227,7 +227,9 @@ export function ProductForm({
               </>
             ) : (
               <>
-                <span className="whitespace-nowrap">{product ? "Update Product" : "Create Product"}</span>
+                <span className="whitespace-nowrap">
+                  {product ? "Update Product" : "Create Product"}
+                </span>
                 <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
               </>
             )}
