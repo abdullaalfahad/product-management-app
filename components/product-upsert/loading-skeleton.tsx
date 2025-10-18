@@ -37,7 +37,7 @@ export default function ProductUpsertSkeleton() {
 
         {/* Price + Category */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          {[...Array(2)].map((_) => (
+          {[1, 2].map((_) => (
             <div key={_} className="space-y-2">
               <div className="h-3 w-20 bg-gray-200 rounded-md" />
               <div className="h-10 w-full bg-gray-200 rounded-md" />
