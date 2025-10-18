@@ -3,10 +3,10 @@
 import { useAppSelector } from "@/redux/hooks";
 import { useGetProductsQuery } from "@/redux/services/product-api";
 import { EmptyState } from "./empty-state";
+import { ProductFilters } from "./filter-by-category";
 import { Header } from "./header";
 import { LoadingSkeleton } from "./loading-skeleton";
 import { Pagination } from "./pagination";
-import { ProductSearch } from "./product-search";
 import { ProductStats } from "./product-stats";
 import { ProductTable } from "./product-table";
 
@@ -33,7 +33,7 @@ export default function ProductList() {
 
           <ProductStats products={products} />
 
-          <ProductSearch />
+          <ProductFilters />
         </div>
 
         {isLoading || isFetching ? (
