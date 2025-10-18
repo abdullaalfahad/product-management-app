@@ -26,27 +26,25 @@ export default function ProductList() {
   });
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 via-blue-50 to-gray-100 p-6">
-      <div className="max-w-7xl mx-auto">
-        <div className="mb-8">
-          <Header />
+    <div className="max-w-6xl mx-auto">
+      <div className="mb-8">
+        <Header />
 
-          <ProductStats products={products} />
+        <ProductStats products={products} />
 
-          <ProductFilters />
-        </div>
-
-        {isLoading || isFetching ? (
-          <LoadingSkeleton />
-        ) : products.length === 0 ? (
-          <EmptyState />
-        ) : (
-          <>
-            <ProductTable products={products} />
-            {!searchText && <Pagination />}
-          </>
-        )}
+        <ProductFilters />
       </div>
+
+      {isLoading || isFetching ? (
+        <LoadingSkeleton />
+      ) : products.length === 0 ? (
+        <EmptyState />
+      ) : (
+        <>
+          <ProductTable products={products} />
+          {!searchText && <Pagination />}
+        </>
+      )}
     </div>
   );
 }

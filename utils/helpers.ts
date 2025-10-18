@@ -1,3 +1,7 @@
+import Cookies from "js-cookie";
+import { logout } from "@/redux/slices/auth-slice";
+import { store } from "@/redux/store";
+
 export function generatePageNumbers(
   current: number,
   total: number,
@@ -22,3 +26,11 @@ export function generatePageNumbers(
 
   return range;
 }
+
+export const handleLogout = () => {
+  Cookies.remove("token");
+
+  store.dispatch(logout());
+
+  window.location.href = "/login";
+};

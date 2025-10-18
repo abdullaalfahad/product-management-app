@@ -68,42 +68,40 @@ export function ProductUpsert({ product }: ProductUpsertProps) {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 via-blue-50 to-gray-100 py-8 px-4">
-      <div className="max-w-4xl mx-auto">
-        <BackToProducts />
+    <div className="max-w-6xl mx-auto">
+      <BackToProducts />
 
-        <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6 mb-6">
-          <div className="flex items-center gap-3">
-            <div className="w-12 h-12 bg-gradient-to-br from-blue-600 to-blue-700 rounded-lg flex items-center justify-center">
-              <Package className="w-6 h-6 text-white" />
-            </div>
-            <div>
-              <h1 className="text-2xl font-bold text-gray-900">
-                {product ? "Edit Product" : "Create New Product"}
-              </h1>
-              <p className="text-sm text-gray-600 mt-0.5">
-                {product
-                  ? "Update product information"
-                  : "Add a new product to your inventory"}
-              </p>
-            </div>
+      <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6 mb-6">
+        <div className="flex items-center gap-3">
+          <div className="w-12 h-12 bg-gradient-to-br from-blue-600 to-blue-700 rounded-lg flex items-center justify-center">
+            <Package className="w-6 h-6 text-white" />
+          </div>
+          <div>
+            <h1 className="text-2xl font-bold text-gray-900">
+              {product ? "Edit Product" : "Create New Product"}
+            </h1>
+            <p className="text-sm text-gray-600 mt-0.5">
+              {product
+                ? "Update product information"
+                : "Add a new product to your inventory"}
+            </p>
           </div>
         </div>
-        <div className="space-y-6">
-          <ImageUpload
-            preview={preview}
-            setPreview={setPreview}
-            imageUrl={imageUrl}
-            setImageUrl={setImageUrl}
-            isUploading={isUploading}
-            uploadToImageKit={uploadToImageKit}
-          />
-          <ProductForm
-            product={product}
-            imageUrl={imageUrl}
-            isUploading={isUploading}
-          />
-        </div>
+      </div>
+      <div className="space-y-6">
+        <ImageUpload
+          preview={preview}
+          setPreview={setPreview}
+          imageUrl={imageUrl}
+          setImageUrl={setImageUrl}
+          isUploading={isUploading}
+          uploadToImageKit={uploadToImageKit}
+        />
+        <ProductForm
+          product={product}
+          imageUrl={imageUrl}
+          isUploading={isUploading}
+        />
       </div>
     </div>
   );

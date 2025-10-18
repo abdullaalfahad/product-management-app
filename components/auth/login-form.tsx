@@ -1,12 +1,12 @@
 "use client";
 
-import { useForm } from "react-hook-form";
-import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useLoginMutation } from "@/redux/services/auth-api";
+import { ArrowRight, Loader2, Mail } from "lucide-react";
 import { useRouter } from "next/navigation";
+import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
-import { Mail, ArrowRight, Loader2 } from "lucide-react";
+import { z } from "zod";
+import { useLoginMutation } from "@/redux/services/auth-api";
 
 const schema = z.object({
   email: z
@@ -38,7 +38,10 @@ export function LoginForm() {
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
       <div>
-        <label className="block mb-2 text-sm font-semibold text-slate-700">
+        <label
+          htmlFor="email"
+          className="block mb-2 text-sm font-semibold text-slate-700"
+        >
           Email Address
         </label>
         <div className="relative">
@@ -46,6 +49,7 @@ export function LoginForm() {
             <Mail className="w-5 h-5 text-slate-400" />
           </div>
           <input
+            id="email"
             type="email"
             placeholder="you@example.com"
             {...register("email")}
@@ -64,7 +68,7 @@ export function LoginForm() {
       <button
         type="submit"
         disabled={isLoading}
-        className="group w-full bg-gradient-to-r from-slate-800 to-slate-950 text-white py-3.5 rounded-xl font-semibold hover:from-slate-900 hover:to-black transition-all duration-200 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none"
+        className="group w-full cursor-pointer bg-gradient-to-r from-slate-800 to-slate-950 text-white py-3.5 rounded-xl font-semibold hover:from-slate-900 hover:to-black transition-all duration-200 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none"
       >
         {isLoading ? (
           <>
