@@ -56,7 +56,9 @@ export function ProductTable({ products }: ProductTableProps) {
                       </div>
                       <div className="min-w-0 flex-1">
                         <p className="font-semibold text-gray-900 truncate text-base">
-                          {p.name}
+                          {p?.name?.length < 40
+                            ? p.name
+                            : `${p.name.slice(0, 40)}...`}
                         </p>
                         <p className="text-sm text-gray-500 mt-0.5">
                           SKU: {p.id.slice(0, 8).toUpperCase()}
@@ -67,13 +69,13 @@ export function ProductTable({ products }: ProductTableProps) {
 
                   <td className="px-6 py-4">
                     <span className="inline-flex items-center px-3 py-1.5 rounded-full text-xs font-semibold bg-gradient-to-r from-blue-50 to-blue-100 text-blue-700 border border-blue-200">
-                      {p.category?.name || "Uncategorized"}
+                      {p?.category?.name || "Uncategorized"}
                     </span>
                   </td>
 
                   <td className="px-6 py-4">
                     <span className="text-xl font-bold text-gray-900">
-                      ${p.price.toFixed(2)}
+                      ${p?.price?.toFixed(2)}
                     </span>
                   </td>
 
