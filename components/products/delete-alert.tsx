@@ -1,9 +1,10 @@
-import { useDeleteProductMutation } from "@/redux/services/product-api";
-import { Product } from "@/types/product";
+"use client";
+
 import { Trash2, X } from "lucide-react";
 import Image from "next/image";
-import React from "react";
 import toast from "react-hot-toast";
+import { useDeleteProductMutation } from "@/redux/services/product-api";
+import type { Product } from "@/types/product";
 
 type DeleteAlertProps = {
   onCancelDelete: () => void;
@@ -22,7 +23,6 @@ export function DeleteAlert({
     try {
       await deleteProduct(id).unwrap();
       toast.success(`Deleted ${name}`);
-
       onConfirmDelete();
     } catch {
       toast.error("Failed to delete product.");
@@ -30,9 +30,10 @@ export function DeleteAlert({
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black bg-opacity-70 backdrop-blur-sm animate-in fade-in duration-200">
-      <div className="bg-white rounded-xl shadow-2xl max-w-md w-full p-6 animate-in zoom-in-95 duration-200">
-        <div className="flex items-start justify-between mb-4">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm animate-in fade-in duration-200">
+      <div className="bg-white rounded-2xl shadow-2xl max-w-md w-full p-6 animate-in zoom-in-95 duration-200 border border-gray-100">
+        {/* Header */}
+        <div className="flex items-start justify-between mb-5">
           <div className="flex items-center gap-3">
             <div className="w-12 h-12 bg-red-100 rounded-full flex items-center justify-center">
               <Trash2 className="w-6 h-6 text-red-600" />
@@ -42,10 +43,11 @@ export function DeleteAlert({
                 Delete Product
               </h3>
               <p className="text-sm text-gray-500 mt-0.5">
-                This action cannot be undone
+                This action cannot be undone.
               </p>
             </div>
           </div>
+
           <button
             type="button"
             onClick={onCancelDelete}
@@ -55,11 +57,12 @@ export function DeleteAlert({
           </button>
         </div>
 
-        {/* Content */}
+        {/* Product Info */}
         <div className="mb-6 p-4 bg-gray-50 rounded-lg border border-gray-200">
           <p className="text-sm text-gray-700 mb-2">
-            Are you sure you want to delete this product?
+            Are you sure you want to permanently delete this product?
           </p>
+
           {selectedProduct && (
             <div className="flex items-center gap-3 mt-3 pt-3 border-t border-gray-200">
               <Image
@@ -84,11 +87,12 @@ export function DeleteAlert({
           )}
         </div>
 
+        {/* Action Buttons */}
         <div className="flex gap-3">
           <button
             type="button"
             onClick={onCancelDelete}
-            className="flex-1 px-4 py-2.5 cursor-pointer text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 transition-all duration-200"
+            className="flex-1 px-4 cursor-pointer py-2.5 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 transition-all duration-200"
           >
             Cancel
           </button>
@@ -97,9 +101,10 @@ export function DeleteAlert({
             onClick={() =>
               handleDelete(selectedProduct?.id, selectedProduct?.name)
             }
-            className="flex-1 px-4 py-2.5 text-sm cursor-pointer font-medium text-white bg-gradient-to-r from-red-600 to-red-700 rounded-lg hover:from-red-700 hover:to-red-800 shadow-md hover:shadow-lg transition-all duration-200"
+            className="flex-1 inline-flex cursor-pointer items-center justify-center gap-2 px-4 py-2.5 text-sm font-medium text-white bg-gradient-to-r from-red-600 to-red-700 rounded-lg hover:from-red-700 hover:to-red-800 shadow-md hover:shadow-lg transition-all duration-200"
           >
-            Delete Product
+            <Trash2 className="w-4 h-4" />
+            Delete
           </button>
         </div>
       </div>
